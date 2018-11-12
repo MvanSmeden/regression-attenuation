@@ -1,0 +1,20 @@
+require(gganimate)
+require(tidyverse)
+
+set.seed(736)
+X <- rnorm(50)
+res <- rnorm(length(X),sd=.1)
+
+scale <- seq(1,10,by=.1)
+OUT <- data.frame(scale=scale[1],X=X,value=X+scale[1]*res)
+for(i in 2:length(scale)){
+  OUT <- rbind(OUT,data.frame(scale=scale[i],X=X+scale[i]*res,value=X))
+}
+
+p4 <-OUT %>% ggplot(aes(x=X,y=value,group=scale))+geom_point(size=1)+ transition_time(scale) + 
+  ease_aes("linear")+ theme_minimal()+theme(axis.text.y=element_blank(),axis.text.x=element_blank()) +
+  ylab("Y") + geom_smooth(method = "lm", se = T,col="black",size=1.5) + geom_abline(lty=2) + 
+  ggtitle("Regression attenuation") + theme(plot.title = element_text(size = 20, face = "bold",hjust = 0.5))
+
+anim <- animate(p4,width=700)
+anim_save("attenuation2.gif")
