@@ -1,2 +1,2 @@
 # regression-attenuation
-R-code gganimate illustration of regression calibration
+R-code gganimate illustration of regression attenuation
